@@ -21,14 +21,23 @@ const cells = Array.from({ length: 64 }, (_, index) => {
   $('board').append(cell);
   return cell;
 });
-function render() {
+function render({ placed = null, captured = [] } = {}) {
   const legal = legalMoves(board, player), score = counts(board), thinking = computerTurn();
   cells.forEach((cell, index) => {
     const valid = !over && legal.includes(index);
     cell.className = `cell${valid ? ' legal' : ''}${index === last ? ' last' : ''}`;
     cell.setAttribute('aria-label', `${coordinate(index)}，${board[index] ? name(board[index]) : valid ? '可落子' : '空位'}`);
     cell.setAttribute('aria-disabled', String(!valid || thinking));
-    cell.innerHTML = board[index] ? `<span class="disc ${board[index] === 1 ? 'black' : 'white'}"></span>` : valid && $('hints').checked ? '<span class="hint"></span>' : '';
+    if (board[index]) {
+      if (cell.renderedPiece !== board[index]) {
+        const animation = index === placed ? ' placed' : captured.includes(index) ? ' flipped' : '';
+        cell.innerHTML = `<span class="disc ${board[index] === 1 ? 'black' : 'white'}${animation}"></span>`;
+      }
+    } else {
+      const content = valid && $('hints').checked ? '<span class="hint"></span>' : '';
+      if (cell.innerHTML !== content) cell.innerHTML = content;
+    }
+    cell.renderedPiece = board[index];
   });
   $('black-score').textContent = score.black;
   $('white-score').textContent = score.white;
@@ -59,19 +68,19 @@ function schedule() {
   if (computerTurn()) timer = setTimeout(() => {
     const index = chooseMove(board, player, Number($('difficulty').value));
     if (index !== null) move(index);
-  }, 380);
+  }, 1400);
 }
 function move(index) {
   const next = play(board, index, player);
   if (!next) return;
   history.push({ board: [...board], player, last, over, notice });
-  const flipped = flips(board, index, player).length;
+  const captured = flips(board, index, player);
   const mover = player;
   board = next; last = index;
   const turn = nextTurn(board, player);
   player = turn.player; over = turn.over;
-  notice = turn.passed ? `${name(-mover)}无处落子，自动跳过。` : `刚刚翻转了 ${flipped} 枚棋子。`;
-  render(); schedule();
+  notice = turn.passed ? `${name(-mover)}无处落子，自动跳过。` : `刚刚翻转了 ${captured.length} 枚棋子。`;
+  render({ placed: index, captured }); schedule();
 }
 function restart() {
   clearTimeout(timer);
@@ -90,5 +99,5 @@ $('restart').addEventListener('click', restart);
 $('mode').addEventListener('change', restart);
 $('color').addEventListener('change', restart);
 $('difficulty').addEventListener('change', schedule);
-$('hints').addEventListener('change', render);
+$('hints').addEventListener('change', () => render());
 restart();
