@@ -15,17 +15,15 @@
 <body>
   <header class="navbar"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">◐</span> 黑白之间</a><span class="edition">REVERSI / 01</span></header>
   <main>
-    <section class="intro"><div><p class="eyebrow">A QUIET GAME OF STRATEGY</p><h1>落下一子，<br>翻转局面<span>。</span></h1></div><p class="intro-copy">黑与白，进与退。<br>在 64 个格子里，找到你的下一步。</p></section>
+    <section class="intro"><div><p class="eyebrow">A QUIET GAME OF STRATEGY</p><h1>落下一子，翻转局面<span>。</span></h1></div><p class="intro-copy">黑与白，进与退。在 64 个格子里，找到你的下一步。</p></section>
     <section class="game" aria-label="黑白棋游戏">
+      <div class="scoreboard"><div id="black-card" class="score-card"><span class="player"><i class="disc black"></i><span id="black-name">黑棋 · 你</span></span><strong id="black-score">2</strong></div><div id="white-card" class="score-card"><span class="player"><i class="disc white"></i><span id="white-name">白棋 · 电脑</span></span><strong id="white-score">2</strong></div></div>
       <div class="board-panel">
-        <div class="game-info" aria-label="比分与棋局状态">
-        <div class="scoreboard"><div id="black-card" class="score-card"><span class="player"><i class="disc black"></i><span id="black-name">黑棋 · 你</span></span><strong id="black-score">2</strong></div><div id="white-card" class="score-card"><span class="player"><i class="disc white"></i><span id="white-name">白棋 · 电脑</span></span><strong id="white-score">2</strong></div></div>
-        <div class="status-box"><p class="eyebrow">此刻棋局</p><h2 id="status" role="status" aria-live="polite">轮到你了</h2><p id="detail">选择一个落点，开始这场对弈。</p><div class="balance" aria-hidden="true"><span id="balance-black"></span></div><p class="remaining">剩余空位 <span id="remaining">60</span></p></div>
-        </div>
         <div class="board-heading"><span id="turn-label">黑棋先行</span><span id="move-label">第 1 手</span></div>
         <div class="board-wrap"><div class="coordinates" aria-hidden="true"> <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div><div class="board-row"><div class="numbers" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div id="board" class="board" role="group" aria-label="8 行 8 列棋盘"></div></div></div>
         <div class="board-caption"><span><i class="hint-sample"></i>可落子位置</span><span id="last-move">黑棋先行 · 点击圆点落子</span></div>
       </div>
+      <div class="status-box"><p class="eyebrow">此刻棋局</p><h2 id="status" role="status" aria-live="polite">轮到你了</h2><p id="detail">选择一个落点，开始这场对弈。</p><div class="balance" aria-hidden="true"><span id="balance-black"></span></div><p class="remaining">剩余空位 <span id="remaining">60</span></p></div>
       <aside class="sidebar">
         <div class="settings"><label for="mode">对弈方式</label><select id="mode"><option value="ai">与电脑对弈</option><option value="local">本地双人对弈</option></select><div id="ai-settings"><div class="setting-row"><label for="color">执棋</label><select id="color"><option value="1">黑棋 · 先行</option><option value="-1">白棋 · 后行</option></select></div><div class="setting-row"><label for="difficulty">电脑难度</label><select id="difficulty"><option value="1">轻松</option><option value="3" selected>标准</option><option value="4">挑战</option></select></div></div><label class="check"><input type="checkbox" id="hints" checked>显示可落子提示</label></div>
         <div class="actions"><button id="restart" class="primary">开启新局 <span>↗</span></button><button id="undo" class="secondary" disabled>↶ 悔棋</button></div>
